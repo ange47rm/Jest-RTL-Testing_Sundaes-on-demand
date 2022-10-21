@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
+import userEvent from "@testing-library/user-event";
 
 test("checkbox is unchecked by default and button is disabled", () => {
   // render the component
@@ -17,7 +18,10 @@ test("checkbox is unchecked by default and button is disabled", () => {
   expect(button).toBeDisabled();
 });
 
-test("checking the checkbox enables the button and unchecking it disables the button", () => {
+test("checking the checkbox enables the button and unchecking it disables the button", async () => {
+  // create user instance
+  const user = userEvent.setup();
+
   // render the component
   render(<SummaryForm />);
 
@@ -29,10 +33,37 @@ test("checking the checkbox enables the button and unchecking it disables the bu
   const button = screen.getByRole("button", { name: /confirm order/i });
 
   // tick the checkbox and check that the button is enabled
-  fireEvent.click(checkbox);
+  await user.click(checkbox);
   expect(button).toBeEnabled();
 
   // untick the checkbox and check that the button is disabled
-  fireEvent.click(checkbox);
+  await user.click(checkbox);
   expect(button).toBeDisabled();
+});
+
+test("popover responds to hover", async () => {
+  // create user instance
+  const user = userEvent.setup();
+
+  // render the component
+  render(<SummaryForm />);
+
+  // popover starts out not visible (not on the page - not hidden)
+  // we will use QUERY as we expect the element NOT to be in the DOM
+  const nullPopover = screen.queryByText(
+    /no ice cream will actually be delivered/i
+  );
+  expect(nullPopover).not.toBeInTheDocument();
+
+  // popover appears on mouseover of checkbox label
+  const termsAndConditions = screen.getByText(/terms and conditions/i);
+  await user.hover(termsAndConditions);
+
+  // we will use GET as we expect the element to be in the DOM
+  const popover = screen.getByText(/no ice cream will actually be delivered/i);
+  expect(popover).toBeInTheDocument();
+
+  // popover disappears when we mouse out
+  await user.unhover(termsAndConditions);
+  expect(popover).not.toBeInTheDocument();
 });
