@@ -1,4 +1,4 @@
-import { createContext, useContext, userState, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { pricePerItem } from "../constants";
 
 // (1) The purpose of this CONTEXT is to store order details (no of scoops/toopings and what kind)
