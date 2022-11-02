@@ -1,7 +1,7 @@
-import { findByRole, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { OrderDetailsProvider } from "../../../context/OrderDetails";
 import Options from "../Options";
-import userEvent from "@testing-library/user-event";
 
 test("update scoop subtotal when scoops change", async () => {
   const user = userEvent.setup();
@@ -27,5 +27,5 @@ test("update scoop subtotal when scoops change", async () => {
   });
   await user.clear(chocolateInput);
   await user.type(chocolateInput, "2");
-  expect(chocolateInput).toHaveTextContent("6.00");
+  expect(scoopSubTotal).toHaveTextContent("6.00");
 });
