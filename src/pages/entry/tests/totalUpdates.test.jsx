@@ -40,9 +40,18 @@ test("update toppings subtotal when toppings change", async () => {
   });
   expect(toppingsSubtotal).toHaveTextContent("0.00");
 
-  const cherriesCheckboxInput = screen.findByRole("checkbox", {
+  const cherriesCheckboxInput = await screen.findByRole("checkbox", {
     name: "Cherries",
   });
+  const hotFudgeCheckboxInput = await screen.findByRole("checkbox", {
+    name: "Hot fudge",
+  });
+
+  await user.click(cherriesCheckboxInput);
+  expect(toppingsSubtotal).toHaveTextContent("1.50");
+
+  await user.click(hotFudgeCheckboxInput);
+  expect(toppingsSubtotal).toHaveTextContent("3.00");
 
   await user.click(cherriesCheckboxInput);
   expect(toppingsSubtotal).toHaveTextContent("1.50");
