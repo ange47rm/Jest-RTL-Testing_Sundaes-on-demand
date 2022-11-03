@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import { OrderDetailsProvider } from "../../../contexts/OrderDetails";
+import { OrderDetailsProvider } from "../../../contexts/OrderDetails"
 import Options from "../Options";
 
 test("update scoop subtotal when scoops change", async () => {
@@ -53,6 +53,5 @@ test("update toppings subtotal when toppings change", async () => {
   await user.click(hotFudgeCheckboxInput);
   expect(toppingsSubtotal).toHaveTextContent("3.00");
 
-  await user.click(cherriesCheckboxInput);
-  expect(toppingsSubtotal).toHaveTextContent("1.50");
+  await
 });
